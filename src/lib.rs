@@ -17,14 +17,22 @@ static Q_TABLE: [f32; 16] = [
     0.35,   // 15
 ];
 
-pub fn chroma_of_index(n: usize) -> f32 {
-    Q_TABLE[n]
+/// Given an `index` in the [0, 15] range, returns the `chroma` value for that `index`.
+/// 
+/// # Arguments:
+/// * `index`: The index in a quantization table. If greater than 15, this function will panic.
+pub fn chroma_of_index(index: usize) -> f32 {
+    Q_TABLE[index]
 }
 
-pub fn index_of_chroma(p: f32) -> usize {
+/// Given a `chroma` value, returns the index of its closest value in the quantization table.
+/// 
+/// # Arguments:
+/// * `chroma`: A chroma value.
+pub fn index_of_chroma(chroma: f32) -> usize {
     Q_TABLE
         .iter()
-        .map(|&c| f32::abs(c - p))
+        .map(|&c| f32::abs(c - chroma))
         .enumerate()
         .fold(
             (0, 1_f32),
